@@ -1,6 +1,7 @@
-package xyz.luan.spark.decorator;
+package xyz.luan.spark.decorator.decorators;
 
 import spark.Route;
+import xyz.luan.spark.decorator.RouteDecorator;
 
 import static spark.Spark.halt;
 

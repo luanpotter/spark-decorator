@@ -1,7 +1,5 @@
 package xyz.luan.spark.decorator;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import spark.servlet.SparkApplication;
 
@@ -9,21 +7,10 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static spark.Spark.get;
-import static xyz.luan.spark.decorator.AuthDecorator.requiresRole;
+import static xyz.luan.spark.decorator.decorators.AuthDecorator.requiresRole;
 
-public class AuthDecoratorTest {
 
-    private static SparkServer<ApplicationTest> server = new SparkServer<>(ApplicationTest.class, 4567);
-
-    @Before
-    public void before() throws IllegalAccessException, InstantiationException {
-        server.before();
-    }
-
-    @After
-    public void after() {
-        server.after();
-    }
+public class AuthDecoratorTest extends BaseTest {
 
     @Test
     public void testNotLogged() throws IOException {
@@ -47,6 +34,11 @@ public class AuthDecoratorTest {
         assertThat(server.get("/foo").header("role", "admin").req().content()).isEqualTo("new");
         assertThat(server.delete("/foo").header("role", "admin").req().status()).isEqualTo(200);
         assertThat(server.get("/foo").header("role", "admin").req().content()).isEqualTo("null");
+    }
+
+    @Override
+    protected Class<ApplicationTest> application() {
+        return ApplicationTest.class;
     }
 
     static class ApplicationTest implements SparkApplication {
