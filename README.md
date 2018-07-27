@@ -1,5 +1,7 @@
 # spark-decorator
 
+[![Build Status](https://travis-ci.org/luanpotter/spark-decorator.svg?branch=master)](https://travis-ci.org/luanpotter/spark-decorator) [![Coverage Status](https://coveralls.io/repos/github/luanpotter/spark-decorator/badge.svg?branch=master)](https://coveralls.io/github/luanpotter/spark-decorator?branch=master)
+
 Simple and pretty decorators for your routes.
 
 Want some routes to have auth, but some don't? Or base it off a parameter?
