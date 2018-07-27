@@ -3,16 +3,11 @@ language: java
 stages:
   - install
   - test
-  - coverage
 
 jobs:
   include:
     - stage: install
-      script: mvn compile -DskipTests=true -B -V
+      script: mvn compile -DskipTests=true -B
 
     - stage: test
-      script: mvn test -B
-
-    - stage: coverage
-      script: mvn test jacoco:report -B
-    - script: mvn coveralls:report -B
+      script: mvn test -B jacoco:report coveralls:report
