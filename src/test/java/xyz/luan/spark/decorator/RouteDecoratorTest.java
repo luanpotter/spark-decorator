@@ -21,6 +21,46 @@ public class RouteDecoratorTest {
     private static SparkServer<ApplicationTest> server = new SparkServer<>(ApplicationTest.class, 4567);
     private static List<String> logs = new ArrayList<>();
 
+    @Before
+    public void before() throws IllegalAccessException, InstantiationException {
+        server.before();
+    }
+
+    @After
+    public void after() {
+        server.after();
+        logs.clear();
+    }
+
+    @Test
+    public void testNoDecorator() throws IOException {
+        String result = server.get("/foo").req().content();
+        assertThat(result).isEqualTo("bar");
+    }
+
+    @Test
+    public void testBeforeGet() throws IOException {
+        String result = server.get("/hello").req().content();
+        assertThat(result).isEqualTo("world");
+        assertThat(logs).containsExactly("logging: /hello");
+    }
+
+    @Test
+    public void testAfterPost() throws IOException {
+        Response result = server.post("/say/cat", "").req();
+        assertThat(result.content()).isEqualTo("cat");
+        assertThat(result.header("secret")).isEqualTo("panda");
+    }
+
+    @Test
+    public void testBeforePut() throws IOException {
+        String result1 = server.put("/star", "trek").req().content();
+        String result2 = server.put("/star", "wars").req().content();
+        assertThat(result1).isEqualTo("wars");
+        assertThat(result2).isEqualTo("trek");
+        assertThat(logs).containsExactly("logging: /star", "logging: /star");
+    }
+
     static class ApplicationTest implements SparkApplication {
         @Override
         public void init() {
@@ -60,45 +100,5 @@ public class RouteDecoratorTest {
                 return null;
             };
         }
-    }
-
-    @Before
-    public void before() throws IllegalAccessException, InstantiationException {
-        server.before();
-    }
-
-    @After
-    public void after() {
-        server.after();
-        logs.clear();
-    }
-
-    @Test
-    public void testNoDecorator() throws IOException {
-        String result = server.get("/foo").req().content();
-        assertThat(result).isEqualTo("bar");
-    }
-
-    @Test
-    public void testBeforeGet() throws IOException {
-        String result = server.get("/hello").req().content();
-        assertThat(result).isEqualTo("world");
-        assertThat(logs).containsExactly("logging: /hello");
-    }
-
-    @Test
-    public void testAfterPost() throws IOException {
-        Response result = server.post("/say/cat", "").req();
-        assertThat(result.content()).isEqualTo("cat");
-        assertThat(result.header("secret")).isEqualTo("panda");
-    }
-
-    @Test
-    public void testBeforePut() throws IOException {
-        String result1 = server.put("/star", "trek").req().content();
-        String result2 = server.put("/star", "wars").req().content();
-        assertThat(result1).isEqualTo("wars");
-        assertThat(result2).isEqualTo("trek");
-        assertThat(logs).containsExactly("logging: /star", "logging: /star");
     }
 }

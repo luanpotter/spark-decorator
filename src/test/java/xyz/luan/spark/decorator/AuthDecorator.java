@@ -6,14 +6,14 @@ import static spark.Spark.halt;
 
 public class AuthDecorator extends RouteDecorator {
 
-    public static AuthDecorator requiresRole(String role) {
-        return new AuthDecorator(role);
-    }
-
     private String requiredRole;
 
     private AuthDecorator(String requiredRole) {
         this.requiredRole = requiredRole;
+    }
+
+    public static AuthDecorator requiresRole(String role) {
+        return new AuthDecorator(role);
     }
 
     @Override

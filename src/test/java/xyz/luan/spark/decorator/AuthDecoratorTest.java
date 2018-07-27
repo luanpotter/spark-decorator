@@ -25,20 +25,6 @@ public class AuthDecoratorTest {
         server.after();
     }
 
-    static class ApplicationTest implements SparkApplication {
-        private String value = "bar";
-
-        @Override
-        public void init() {
-            get("/foo", (req, resp) -> value);
-            requiresRole("user").post("/foo", (req, resp) -> value = req.body());
-            requiresRole("admin").delete("/foo", (req, resp) -> {
-                value = "null";
-                return "deleted";
-            });
-        }
-    }
-
     @Test
     public void testNotLogged() throws IOException {
         assertThat(server.get("/foo").req().content()).isEqualTo("bar");
@@ -61,5 +47,19 @@ public class AuthDecoratorTest {
         assertThat(server.get("/foo").header("role", "admin").req().content()).isEqualTo("new");
         assertThat(server.delete("/foo").header("role", "admin").req().status()).isEqualTo(200);
         assertThat(server.get("/foo").header("role", "admin").req().content()).isEqualTo("null");
+    }
+
+    static class ApplicationTest implements SparkApplication {
+        private String value = "bar";
+
+        @Override
+        public void init() {
+            get("/foo", (req, resp) -> value);
+            requiresRole("user").post("/foo", (req, resp) -> value = req.body());
+            requiresRole("admin").delete("/foo", (req, resp) -> {
+                value = "null";
+                return "deleted";
+            });
+        }
     }
 }
