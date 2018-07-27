@@ -62,15 +62,15 @@ Assume each route might or might not require auth, and the ones that require aut
 public class SparkAuth extends RouteDecorator {
 
 ```java
-public class SparkAuth extends RouteDecorator {
+public class AuthDecorator extends RouteDecorator {
 
-    public static final SparkAuth requiresRole(String role) {
-        return new SparkAuth(role);
+    public static AuthDecorator requiresRole(String role) {
+        return new AuthDecorator(role);
     }
     
     private String requiredRole;
 
-    private SparkAuth(String requiredRole) {
+    private AuthDecorator(String requiredRole) {
         this.requiredRole = requiredRole;
     }
 

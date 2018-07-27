@@ -7,6 +7,7 @@ import spark.servlet.SparkApplication;
 import xyz.luan.facade.HttpFacade;
 
 import java.net.MalformedURLException;
+import java.util.function.Supplier;
 
 public class SparkServer<T extends SparkApplication> extends ExternalResource {
 
@@ -35,6 +36,32 @@ public class SparkServer<T extends SparkApplication> extends ExternalResource {
     @Override
     protected void after() {
         this.sparkApplication.destroy();
+        this.sparkApplication = null;
+        Spark.stop();
+        waitFor(() -> !isSparkInitialized());
+    }
+
+    public boolean isSparkInitialized() {
+        try {
+            Spark.port();
+            return true;
+        } catch (IllegalStateException ignored) {
+            return false;
+        }
+    }
+
+    public void waitFor(Supplier<Boolean> condition) {
+        while (!condition.get()) {
+            sleep(100);
+        }
+    }
+
+    public void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public HttpFacade get(String path) {
