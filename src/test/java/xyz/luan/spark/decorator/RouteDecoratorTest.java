@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static spark.Spark.get;
 import static xyz.luan.spark.decorator.RouteDecoratorTest.AfterDecorator.secretPanda;
 import static xyz.luan.spark.decorator.RouteDecoratorTest.LoggerDecorator.withLogger;
 
@@ -23,6 +24,7 @@ public class RouteDecoratorTest {
     static class ApplicationTest implements SparkApplication {
         @Override
         public void init() {
+            get("foo", (req, resp) -> "bar");
             withLogger.get("/hello", (req, resp) -> "world");
             secretPanda.post("/say/:what", (req, resp) -> req.params("what"));
             withLogger.put("/star", (req, resp) -> req.body().equals("trek") ? "wars" : "trek");
@@ -69,6 +71,12 @@ public class RouteDecoratorTest {
     public void after() {
         server.after();
         logs.clear();
+    }
+
+    @Test
+    public void testNoDecorator() throws IOException {
+        String result = server.get("/foo").req().content();
+        assertThat(result).isEqualTo("bar");
     }
 
     @Test
