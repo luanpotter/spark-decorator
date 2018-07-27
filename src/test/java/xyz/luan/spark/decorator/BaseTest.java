@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import spark.servlet.SparkApplication;
 import xyz.luan.spark.decorator.decorators.LoggerDecorator;
+import xyz.luan.spark.decorator.decorators.LoggerTemplateViewDecorator;
 
 public abstract class BaseTest {
 
@@ -20,5 +21,6 @@ public abstract class BaseTest {
     public void after() {
         server.after();
         LoggerDecorator.logs.clear();
+        LoggerTemplateViewDecorator.logs.clear();
     }
 }
