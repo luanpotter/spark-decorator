@@ -10,7 +10,7 @@
 
     <groupId>xyz.luan.spark.decorator</groupId>
     <artifactId>spark-decorator</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <packaging>jar</packaging>
 
     <name>spark-decorator</name>
@@ -64,6 +64,7 @@
             <groupId>com.sparkjava</groupId>
             <artifactId>spark-core</artifactId>
             <version>2.7.2</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>

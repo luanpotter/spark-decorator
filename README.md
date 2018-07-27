@@ -10,14 +10,27 @@ Spark's `before` and `after` work great if the distinction your are making is by
 
 This libs helps you to decorate your routes in order to add custom behaviour to a selection of them, without duplication and hassles.
 
-You can hook `before` and `after` filters and do anything you want! 
+You can hook `before` and `after` filters and do anything you want!
 
 ## Install
 
-You must have spark...
+Of course you must have Spark, we include it as provided (version 2.7.2).
 
-maven...
-gradle...
+Then, add to your `pom.xml`:
+
+```xml
+    <dependency>
+        <groupId>xyz.luan.spark.decorator</groupId>
+        <artifactId>spark-decorator</artifactId>
+        <version>0.2.0</version>
+    </dependency>
+```
+
+Or, if you are using gradle:
+
+```groovy
+    compile 'xyz.luan.spark.decorator:spark-decorator:0.2.0'
+```
 
 ## Usage
 
@@ -69,7 +82,7 @@ public class AuthDecorator extends RouteDecorator {
     public static AuthDecorator requiresRole(String role) {
         return new AuthDecorator(role);
     }
-    
+
     private String requiredRole;
 
     private AuthDecorator(String requiredRole) {
