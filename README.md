@@ -63,10 +63,10 @@ Now, in your controller/application, instead of
 You do:
 
 ```java
-    withLogger.get("/foo", (req, resp) -> "bar");
+    secretPanda.get("/foo", (req, resp) -> "bar");
 ```
 
-And your request has been enriched. You'd of course statically import `get` from `Spark`, and now also statically import `withLogger` from your class.
+And your request has been enriched. You'd of course statically import `get` from `Spark`, and now also statically import `secretPanda` from your class.
 
 Pretty neat, hum? Let's see a more complex example now!
 
