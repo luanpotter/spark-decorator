@@ -74,8 +74,6 @@ Pretty neat, hum? Let's see a more complex example now!
 
 Assume each route might or might not require auth, and the ones that require auth require a specific role to access. You could create a decorator like so:
 
-public class SparkAuth extends RouteDecorator {
-
 ```java
 public class AuthDecorator extends RouteDecorator {
 
